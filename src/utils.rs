@@ -3,7 +3,7 @@ use hal::pac::SPI1;
 use hal::spi::Spi;
 use heapless::spsc::Queue;
 
-fn read_temperature(spi: &mut Spi<SPI1>, cs: &mut Pin) -> f32{
+pub fn read_temperature(spi: &mut Spi<SPI1>, cs: &mut Pin) -> f32{
     const TEMP_LSB_CMD: u8 = 0x01;
     const TEMP_MSB_CMD: u8 = 0x02;
     cs.set_low(); 
@@ -21,15 +21,15 @@ fn read_temperature(spi: &mut Spi<SPI1>, cs: &mut Pin) -> f32{
 }
 
 
-struct MovingAverage {
-    sum: f32,
-    count: usize,
-    buffer: Queue<f32, 60>
+pub struct MovingAverage {
+    pub sum: f32,
+    pub count: usize,
+    pub buffer: Queue<f32, 60>
 }
 
 impl MovingAverage {
     //constructor
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             sum: 0.0,
             count: 0,
@@ -38,7 +38,7 @@ impl MovingAverage {
     }
 
     //adding new value to the queue
-    fn add(&mut self, value: f32){
+    pub fn add_last(&mut self, value: f32){
         if self.buffer.is_full(){
             if let Some(first_value) = self.buffer.dequeue(){
                 self.sum -= first_value;
@@ -51,7 +51,7 @@ impl MovingAverage {
     }
 
     //calculate an average
-    fn average(&self) -> f32 {
+    pub fn get_average(&self) -> f32 {
         if self.count == 0 {
             0.0
         }else {
