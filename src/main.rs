@@ -14,7 +14,7 @@ use hal::spi::{Spi, BaudRate};
 mod init;
 mod setup;
 mod system_status;
-
+mod utils;
 
 
 #[entry]
