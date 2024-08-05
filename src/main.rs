@@ -14,6 +14,7 @@ use hal::pac::{Peripherals, SPI1};
 use hal::spi::{Spi, BaudRate};
 use utils::{read_temperature, MovingAverage};
 use hal::delay_ms;
+use panic_probe as _;
 
 mod init;
 mod setup;
